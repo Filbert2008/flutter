@@ -89,9 +89,9 @@ Container(
         children: [
           // Masukkan context dan const Pbb2() sebagai parameter
           _buildMenuItem(context, "PBB", const PBB2()), 
-          _buildMenuItem(context, "PBB", const PBB2()), 
-          _buildMenuItem(context, "PBB", const PBB2()), 
-          _buildMenuItem(context, "PBB", const PBB2()), 
+          _buildMenuItem(context, "BPHTB", const PBB2()),
+          _buildMenuItem(context, "PAJAK DAERAH", const PBB2()),
+         _buildMenuItem(context, "LAINNYA", const PBB2()),
         
         ],
       ),
