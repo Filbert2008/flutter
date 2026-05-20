@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'home_page.dart'; // Menggunakan HomePage sesuai file Anda
+import '../screens/home_page.dart'; // Menggunakan HomePage sesuai file Anda
 import 'register_page.dart'; // Import halaman pendaftaran
 import 'forgot_password_page.dart'; // Import halaman lupa password
 
