@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'home_page_part2.dart'; // Import halaman home part 2
-import 'pbb1.dart';
-import 'pbb2.dart';
-import 'layanan_keliling.dart';
-import 'detail_sppt.dart';
+
 import 'login_page.dart';
 void main() {
   runApp(const MyApp());
