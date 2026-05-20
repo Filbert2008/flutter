@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../screens/home_page.dart'; // Menggunakan HomePage sesuai file Anda
-import 'register_page.dart'; // Import halaman pendaftaran
-import 'forgot_password_page.dart'; // Import halaman lupa password
 
+// PERBAIKAN PATH IMPORT SESUAI STRUKTUR FOLDER:
+import '../models/user_model.dart';         // Keluar dari auth/ -> masuk ke models/
+import '../main_navigation.dart';   // Keluar dari auth/ -> masuk ke screens/
+import 'register_page.dart'; 
+import 'forgot_password_page.dart';
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -18,18 +20,16 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
   
   bool _isPasswordVisible = false;
-  bool _isLoading = false; // State untuk mendeteksi proses loading API
+  bool _isLoading = false; 
 
   // Fungsi untuk memproses Login ke REST API
   Future<void> _loginAction() async {
-    // Validasi form lokal terlebih dahulu
     if (!_formKey.currentState!.validate()) return;
 
     setState(() {
       _isLoading = true;
     });
 
-    // Sesuaikan URL ini dengan endpoint REST API backend Anda
     final Uri url = Uri.parse('https://api.lapakbantul.com/v1/login'); 
 
     try {
@@ -54,21 +54,30 @@ class _LoginPageState extends State<LoginPage> {
             const SnackBar(content: Text('Login Berhasil!'), backgroundColor: Colors.green),
           );
           
-          // Pindah ke halaman utama dan hapus tumpukan halaman login
+          // 1. Tambahan: Konversi data 'user' dari API menjadi Objek Dart
+          // (Sesuaikan key ['user'] dengan penamaan dari payload backend Anda)
+          UserModel loggedInUser = UserModel.fromJson(data['user']);
+          
+          // Jika backend Anda mengembalikan token, Anda bisa menangkapnya di sini:
+          // String token = data['token'] ?? '';
+
+          // 2. Perubahan Navigasi: Pindah ke MainNavigation sambil mengoper data loggedInUser
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const HomePage()),
+            MaterialPageRoute(
+              builder: (context) => MainNavigation(user: loggedInUser),
+            ),
           );
         }
       } else {
-        // REQUEST GAGAL (Contoh: Password salah / Akun tidak terdaftar)
+        // REQUEST GAGAL
         String errorMessage = data['message'] ?? 'Gagal masuk, periksa data Anda.';
         _showErrorDialog(errorMessage);
       }
     } catch (e) {
       // MASALAH JARINGAN / SERVER TIMEOUT
       _showErrorDialog('Tidak dapat terhubung ke server. Periksa koneksi internet Anda.');
-    } finally { // <--- PERBAIKAN: Diubah dari 'final' menjadi 'finally'
+    } finally { 
       if (mounted) {
         setState(() {
           _isLoading = false;
@@ -107,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: const Color(0xFF003566),
       body: SingleChildScrollView(
         child: Form(
-          key: _formKey, // Pasang GlobalKey untuk validasi
+          key: _formKey, 
           child: Column(
             children: [
               const SizedBox(height: 80),
